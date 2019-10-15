@@ -1,0 +1,28 @@
+version: "2"
+services:
+  etcd-1:
+    image: gcr.io/etcd-development/etcd:latest
+    entrypoint: /usr/local/bin/etcd
+    command:
+            - '--name=etcd-1'
+            - '--initial-advertise-peer-urls=http://etcd-1:2380'
+            - '--listen-peer-urls=http://0.0.0.0:2380'
+            - '--listen-client-urls=http://0.0.0.0:2379'
+            - '--advertise-client-urls=http://etcd-1:2379'
+            - '--initial-cluster=etcd-1=http://etcd-1:2380'
+            - '--initial-cluster-state=new'
+    networks:
+      - internal_dev
+    restart: unless-stopped
+    
+  etcd-viewer:
+    image: nikfoundas/etcd-viewer
+    networks:
+      - internal_dev
+    ports:
+      - 8081:8080
+    
+networks:
+  internal_dev:
+    external:
+      name: internal_dev

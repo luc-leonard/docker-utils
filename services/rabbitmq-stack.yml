@@ -1,0 +1,15 @@
+version: "2"
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    networks:
+      - internal_dev
+    ports:
+      - 15672:15672 
+    restart: unless-stopped
+    
+    
+networks:
+  internal_dev:
+    external:
+      name: internal_dev
