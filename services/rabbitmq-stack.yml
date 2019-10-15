@@ -1,15 +1,29 @@
-version: "2"
+version: "3"
 services:
-  rabbitmq:
+  rabbitmq-master:
     image: rabbitmq:3-management
     networks:
-      - internal_dev
+      - rabbitmq_overlay
     ports:
-      - 15672:15672 
+      - "15672:15672/tcp"
     restart: unless-stopped
+    deploy:
+      mode: global
+    environment:
+    - "RABBITMQ_ERLANG_COOKIE=YOLO_424242"
+    - "RABBITMQ_NODENAME=master@rabbitmq-master"
+    
+  rabbitmq-nodes:
+    image: rabbitmq:3-node
+    networks:
+      - rabbitmq_overlay
+    restart: "no"
+    environment:
+    - "CLUSTER_NAME=master@rabbitmq-master"
+    - "RABBITMQ_ERLANG_COOKIE=YOLO_424242"
     
     
 networks:
-  internal_dev:
+  rabbitmq_overlay:
     external:
-      name: internal_dev
+      name: rabbitmq_overlay
