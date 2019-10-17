@@ -12,7 +12,7 @@ services:
       - target: 9001
         published: 9001
         protocol: tcp
-        mode: ingress
+        mode: host
     networks:
       - portainer_agent
     deploy:
@@ -21,16 +21,19 @@ services:
         constraints: [node.platform.os == linux]
   webui:
     image: portainer/portainer
+    volumes:
+       - portainer_data:/data
     networks:
       - portainer_agent
     deploy:
       mode: global
     ports:
-    - target: 9000
-      published: 9000 
-      protocol: tcp
-      mode: host
+    - 9000:9
 
+
+volumes:
+   portainer_data:
+     external: true
 
 
 networks:
