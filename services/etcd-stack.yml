@@ -1,4 +1,4 @@
-version: "3"
+version: "3.2"
 services:
   etcd-1:
     image: gcr.io/etcd-development/etcd:latest
@@ -31,6 +31,7 @@ services:
     
 networks:
   etcd:
+      attachable: true
 
 volumes:
   etcd_data:

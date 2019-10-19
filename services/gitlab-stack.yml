@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  gitlab:
+    image: gitlab/gitlab-ce
+    volumes:
+      - /home/gitlab/config:/etc/gitlab:Z
+      - /home/gitlab/logs:/var/log/gitlab:Z
+      - /home/gitlab/data:/var/opt/gitlab:Z
+    ports:
+      - 80:80/tcp
+      - 2222:22
+    restart: always
+

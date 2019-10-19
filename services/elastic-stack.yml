@@ -1,0 +1,46 @@
+version: "3.7"
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.0
+    environment:
+      - bootstrap.memory_lock=false
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200/tcp
+    networks:
+      - elastic
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.4.0
+    networks:
+      - elastic
+    ports:
+      - 5601:5601/tcp
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:7.4.0
+    command: -e -system.hostfs=/hostfs
+    networks:
+      - elastic
+      - rabbitmq_overlay
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /:/hostfs
+      - /proc:/hostfs/proc
+
+networks:
+  elastic:
+    attachable: true
+  rabbitmq_overlay:
+    external:
+      name: rabbitmq_overlay
+
+volumes:
+  es-data:
+  kibana-data:
