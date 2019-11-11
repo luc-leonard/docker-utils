@@ -41,6 +41,22 @@ services:
     ports:
       - 8989:8989/tcp
     restart: unless-stopped
+
+  radarr:
+    image: linuxserver/radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - UMASK_SET=022 #optional
+    networks:
+      - internal
+    volumes:
+      - /home/lleonard/tv_box/radarr_config:/config
+      - /mnt/MyPassport/TV_BOX/LIBRARIES:/tv
+      - /home/lleonard/tv_box/downloads:/tv_box/download/
+    ports:
+      - 7878:7878/tcp
     
   sabnzbd:
     image: sabnzbd/sabnzbd
@@ -54,7 +70,7 @@ services:
         - 8080:8080/tcp
     networks:
       - internal
-    restart: always
+    restart: unless-stopped
     
 networks:
   internal:

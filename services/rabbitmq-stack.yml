@@ -14,7 +14,7 @@ services:
     - "RABBITMQ_NODENAME=master@rabbitmq-master"
     
   rabbitmq-nodes:
-    image: rabbitmq:3-node
+    image: lleonard/rabbitmq-node:3
     networks:
       - rabbitmq_overlay
     restart: "no"

@@ -2,7 +2,7 @@ leave_cluster()
 {
 	rabbitmqctl stop_app
 	echo 'Leaving cluster @ ' $CLUSTER_NAME
-	rabbitmqctl join_cluster $CLUSTER_NAME
+	rabbitmqctl leave_cluster $CLUSTER_NAME
   	exit 1
 }
 
@@ -24,7 +24,7 @@ join_cluster()
 
 join_cluster
 echo 'Registering signal'
-trap leave_cluster 1 2 3 6
+trap 'leave_cluster' 1 2 3 6
 while :
 do
 	sleep 60s
