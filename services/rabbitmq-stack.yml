@@ -1,29 +1,25 @@
 version: "3"
 services:
   rabbitmq-master:
-    image: rabbitmq:3-management
+    image: lleonard/rabbitmq:latest
     networks:
       - rabbitmq_overlay
+      - consul_consul
     ports:
       - "15672:15672/tcp"
+      - "5672:5672/tcp"
     restart: unless-stopped
     deploy:
-      mode: global
+      mode: replicated
     environment:
     - "RABBITMQ_ERLANG_COOKIE=YOLO_424242"
     - "RABBITMQ_NODENAME=master@rabbitmq-master"
-    
-  rabbitmq-nodes:
-    image: lleonard/rabbitmq-node:3
-    networks:
-      - rabbitmq_overlay
-    restart: "no"
-    environment:
-    - "CLUSTER_NAME=master@rabbitmq-master"
-    - "RABBITMQ_ERLANG_COOKIE=YOLO_424242"
     
     
 networks:
   rabbitmq_overlay:
     external:
       name: rabbitmq_overlay
+  consul_consul:
+    external:
+      name: consul_consul

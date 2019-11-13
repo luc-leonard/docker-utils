@@ -1,0 +1,19 @@
+version: "3.2"
+services:
+  consul:
+    image: consul:latest
+    volumes:
+      - data:/data/
+    deploy:
+      mode: global
+    networks:
+      - consul
+    ports:
+      - "8500:8500/tcp"
+    
+networks:
+  consul:
+      attachable: true
+
+volumes:
+  data:
